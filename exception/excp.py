@@ -1,3 +1,9 @@
+#处理异常
+# try：
+#     ...
+# except ...:
+#     ...
+
 try:
     print(0 / 0)
 except ZeroDivisionError:
