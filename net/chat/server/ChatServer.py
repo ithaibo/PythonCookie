@@ -5,19 +5,34 @@ import socket, asyncore
 PORT = 5005
 NAME = 'TestChat'
 
+
 class EndSession(Exception): pass
+
 
 class CommandHandler:
     """
     Simple command handler similar to cmd.Cmd from the standard library.
     """
 
+    def __init__(self):
+        pass
+
     def unknown(self, session, cmd):
-        'Respond to an unknown command'
+        """
+        Respond to an unknown command
+        :param session:
+        :param cmd:
+        :return:
+        """
         session.push('Unknown command: {}s\r\n'.format(cmd))
 
     def handle(self, session, line):
-        'Handle a received line from a given session'
+        """
+        Handle a received line from a given session
+        :param session:
+        :param line:
+        :return:
+        """
         if not line.strip(): return
         # Split off the command:
         parts = line.split(' ', 1)
@@ -33,6 +48,7 @@ class CommandHandler:
             # If it isn't, respond to the unknown command:
             self.unknown(session, cmd)
 
+
 class Room(CommandHandler):
     """
     A generic environment that may contain one or more users (sessions).
@@ -44,21 +60,36 @@ class Room(CommandHandler):
         self.sessions = []
 
     def add(self, session):
-        'A session (user) has entered the room'
+        """
+        A session (user) has entered the room
+        :param session:
+        :return:
+        """
         self.sessions.append(session)
 
     def remove(self, session):
-        'A session (user) has left the room'
+        """
+        A session (user) has left the room
+        :param session:
+        :return:
+        """
         self.sessions.remove(session)
 
     def broadcast(self, line):
-        'Send a line to all sessions in the room'
+        """
+        Send a line to all sessions in the room
+        :param line:
+        :return:
+        """
         for session in self.sessions:
             session.push(line)
 
     def do_logout(self, session, line):
-        'Respond to the logout command'
+        """
+        Respond to the logout command
+        """
         raise EndSession
+
 
 class LoginRoom(Room):
     """
@@ -88,6 +119,7 @@ class LoginRoom(Room):
             # The name is OK, so it is stored in the session, and
             # the user is moved into the main room. session.name = name
             session.enter(self.server.main_room)
+
 
 class ChatRoom(Room):
     """
@@ -120,6 +152,7 @@ class ChatRoom(Room):
         for name in self.server.users:
             session.push(name + '\r\n')
 
+
 class LogoutRoom(Room):
     """
     A simple room for a single user. Its sole purpose is to remove the
@@ -130,6 +163,7 @@ class LogoutRoom(Room):
         # When a session (user) enters the LogoutRoom it is deleted
         try: del self.server.users[session.name]
         except KeyError: pass
+
 
 class ChatSession(async_chat):
     """
@@ -167,6 +201,7 @@ class ChatSession(async_chat):
         async_chat.handle_close(self)
         self.enter(LogoutRoom(self.server))
 
+
 class ChatServer(dispatcher):
     """
     A chat server with a single room.
@@ -185,6 +220,7 @@ class ChatServer(dispatcher):
     def handle_accept(self):
         conn, addr = self.accept()
         ChatSession(self, conn)
+
 
 if __name__ == '__main__':
     s = ChatServer(PORT, NAME)
