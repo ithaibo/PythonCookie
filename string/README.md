@@ -22,3 +22,14 @@ C:\\windows
 ``` python
 print u'Andy爱Smily'
 ```
+
+4. 字符串格式化
+
+## 字符串方法
+1. find
+2. join
+3. lower
+4. replace
+5. split
+6. strip
+7. translate
