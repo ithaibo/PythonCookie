@@ -1,17 +1,7 @@
-#!/usr/local/bin/python
-# -*- coding: utf-8 -*-
+1. 并行迭代
 
-# while condiftion :
-#      //do something
-
-# words = ['this', 'is', 'an', 'ex', 'parrot']
-# for word in words:
-    # print word
-
-# numbers = range(0, 10)
-# for num in numbers:
-    # print num
-
+2. 循环中的else
+``` python
 from math import sqrt
 for n in range(99, 81, -1):
     root = sqrt(n)
@@ -20,8 +10,12 @@ for n in range(99, 81, -1):
         break
 else:
     print "didn't find it"
+# didn't find it
+```
 
+3. 列表推导式
+``` python
 girls = ['alice', 'bernice', 'clarice']
 boys  = ['chris', 'arnold', 'bob']
 matched = [b+' + '+g for b in boys for g in girls if b[0] == g[0]]
-print str(matched)
+```
